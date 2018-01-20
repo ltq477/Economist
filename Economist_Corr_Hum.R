@@ -1,0 +1,43 @@
+# Set Working Directory
+setwd("/Users/Ence477/OneDrive/DataScience/Projects/Economist/")
+
+#Call Libraries
+library(ggplot2)
+
+#Get dataset and assign to Data Frame
+df <- read.csv('Economist_Data.csv')
+
+#get Dataframe Structure (173 obs and 6 features)
+str(df)
+
+#create ggplot Data
+plt <- ggplot(df, aes(CPI, HDI))
+
+#Add geom_point
+plt + geom_point(aes(color=Region),  size=4.3, shape='O') + 
+  #Add trend line
+  geom_smooth(method = 'lm', formula = y ~ log(x), se= FALSE, color='red') + 
+  #set Coordinates
+  coord_cartesian(xlim=c(1,10), ylim=c(0.2,1)) + 
+  #Label X Axis and Y Axis
+  xlab('Corruption Perception Index, 2011 (10=Least Corrupt)') + 
+  ylab('Human Development Index, 2011 (1=Best)') + 
+  #Country Labels
+  geom_text(aes(label=Country), color='gray', data = subset(df, Country %in% label.points), 
+            check_overlap = TRUE, alpha=1) + 
+  #Add theme
+  theme_bw() + 
+  #set theme to center
+  theme(plot.title = element_text(hjust=0.5)) + 
+  #Add Chart Title
+  ggtitle("Corruption and Human Development")
+
+
+#Label Points to show on chart
+label.points <- c("Russia", "Venezuela", "Iraq", "Myanmar", "Sudan",
+                  "Afghanistan", "Congo", "Greece", "Argentina", "Brazil",
+                  "India", "Italy", "China", "South Africa", "Spane",
+                  "Botswana", "Cape Verde", "Bhutan", "Rwanda", "France",
+                  "United States", "Germany", "Britain", "Barbados", "Norway", "Japan",
+                  "New Zealand", "Singapore", "Syria", "Japan")
+
